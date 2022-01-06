@@ -10,23 +10,13 @@ section {
     border: 1px solid rgba(128, 128, 128, 0.5);
     width: 350px;
     margin: 0 auto;
+    padding-bottom: 15px;
 }
 
 img {
     width: 100%;
 }
 
-p {
-    padding-left: 15px;
-}
-
-h2 {
-    padding-left: 15px;
-}
-
-button {
+p, h2, button {
     margin-left: 15px;
-    margin-bottom: 15px
 }
-
-
