@@ -50,7 +50,7 @@ def exercise2():
 @app.route('/restaurant-data/<city>')
 @app.route('/restaurant-data')
 def exercise3(city='Evanston, IL', search_term=''):
-    url = 'https://www.apitutor.org/yelp/simple/v3/businesses/search?location={0}&term={1}'.format(city, search_term)
+    url = f'https://www.apitutor.org/yelp/simple/v3/businesses/search?location={city}&term={search_term}'
     response = requests.get(url)
     data = response.json()
     pprint(data) # for debugging -- prints the result to the command line
@@ -63,21 +63,18 @@ def exercise3(city='Evanston, IL', search_term=''):
 @app.route('/restaurant/<city>')
 @app.route('/restaurant')
 def exercise4(city='Evanston, IL', search_term=''):
-    url = 'https://www.apitutor.org/yelp/simple/v3/businesses/search?location={0}&term={1}'.format(city, search_term)
+    url = f'https://www.apitutor.org/yelp/simple/v3/businesses/search?location={city}&term={search_term}'
     response = requests.get(url)
     restaurants = response.json()
-    pprint(restaurants[0]) # for debugging
+    pprint(restaurants) # for debugging
     return render_template(
         'restaurant.html',
         user=current_user,
         search_term=search_term,
         city=city,
-        restaurant=restaurants[0]
+        restaurants=restaurants
     )
 
 @app.route('/cards')
 def photos_static():
     return render_template('cards.html')
-
-
-    
