@@ -37,7 +37,7 @@ const initializeConnection = ev => {
          ***********************************************************
          * Respond to the messages that are sent back to the server:
          * 
-         *   1. If the data.type is "login" or "disconnent", 
+         *   1. If the data.type is "login" or "disconnect", 
          *      display the list of logged in users in the 
          *      #users-list div (right-hand panel).
          * 
@@ -45,6 +45,30 @@ const initializeConnection = ev => {
          *      to the #chat div (main panel).
          ************************************************************/
 
+        if (data.type === 'login' || data.type === 'disconnect') {
+            document.querySelector('#users-list').innerHTML = '';
+            const ul = document.createElement('ul');
+            for (user of data.users) {
+                const li = document.createElement('li')
+                li.textContent = user
+                ul.appendChild(li);
+            }
+            document.querySelector('#users-list').appendChild(ul);
+        } else if (data.type === 'chat') {
+            const div = document.createElement('div');
+            const strong = document.createElement('strong');
+            strong.textContent = data.username + ':';
+            div.appendChild(strong);
+            const span = document.createElement('span');
+            span.textContent = data.text;
+            div.appendChild(span);
+            if (data.username === username) {
+                div.className = 'right';
+            } else {
+                div.className = 'left';
+            }
+            document.querySelector('#chat').appendChild(div);
+        }
     };
 };
 

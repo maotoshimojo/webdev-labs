@@ -72,19 +72,33 @@ async def respond_to_message(websocket, message):
     4. Otherwise, ignore the message (don't pass it on), and
        log it to the console:
     
-            console.log('Unrecognized message type:', data);
+            print('Unrecognized message type:', data)
 
     To send messages to all of the clients, iterate through the 
     logged_in_users (which stores each websocket-username) pair.
     ********************************************************************/
     '''
-    
-    await websocket.send(json.dumps(data))
-    # for sock in logged_in_users:
-    #     # TODO: replace "data" with a message that conforms to
-    #     # the specs above:
-    #     await sock.send(json.dumps(data))
 
+    message = ''
+    if data.get('type') == 'login':
+        logged_in_users[websocket] = data.get('username')
+        message = json.dumps({
+                'type': 'login',
+                'users': list(logged_in_users.values())
+            })
+    elif data.get('type') == 'disconnect':
+        del logged_in_users[websocket]
+        message = json.dumps({
+                'type': 'disconnect',
+                'users': list(logged_in_users.values())
+            })
+    elif data.get('type') == 'chat':
+        message = json.dumps(data)
+    else:
+        print('Unrecognized message type:', data)
+    
+    for sock in logged_in_users:
+        await sock.send(message)
 
 
 async def broadcast_messages(websocket, path):
